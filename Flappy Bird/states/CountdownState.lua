@@ -11,6 +11,12 @@ function CountdownState:init()
     self.count = 3
 end
 
+function CountdownState:enter(params)
+    if params then
+        self.params = params
+    end
+end
+
 function CountdownState:update(dt)
     self.timer = self.timer + dt
 
@@ -20,7 +26,7 @@ function CountdownState:update(dt)
         self.count = self.count - 1
 
         if self.count == 0 then
-            gStateMachine:change("play")
+            gStateMachine:change("play", self.params)
         end
     end
 end

@@ -1,7 +1,5 @@
 PipePair = Class{}
 
-local GAP_HEIGHT = 90
-
 function PipePair:init(y)
     self.scored = false
 
@@ -11,7 +9,7 @@ function PipePair:init(y)
     -- pipes that form a pair
     self.pipes = {
         ["upper"] = Pipe("top", self.y),
-        ["lower"] = Pipe("bottom", self.y + PIPE_HEIGHT + GAP_HEIGHT)
+        ["lower"] = Pipe("bottom", self.y + PIPE_HEIGHT + (math.random(85, 100)))
     }
 
     -- controlls whether the pipe pair is ready to be removed from the screen

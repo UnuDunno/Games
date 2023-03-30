@@ -7,18 +7,18 @@ PlayState = Class{__includes = BaseState}
 function PlayState:init()
     self.bird = Bird()
     self.pipePairs = {}
-    self.timer = 0
+    self.timer = math.random(2, 4)
     self.score = 0
 
     -- initialize the last recorded Y for a gap placement to base other gaps off of
-    self.lastY = -PIPE_HEIGHT + math.random(80) + 20
+    self.lastY = -PIPE_HEIGHT + math.random(90) + 20
 end
 
 function PlayState:update(dt)
-    self.timer = self.timer + dt
+    self.timer = self.timer - dt
 
     -- spawn pipe pair
-    if self.timer > 2 then
+    if self.timer <= 0 then
         -- modify the last Y coordinate placed so the pipe gaps aren't too far apart
         -- no higher than 10 pixels below the top edge of the screen
         -- no lower than a gap length (90 pixels) from the bottom
@@ -31,7 +31,7 @@ function PlayState:update(dt)
 
         table.insert(self.pipePairs, PipePair(y))
 
-        self.timer = 0
+        self.timer = math.random(2, 4)
     end
 
     -- check for scored points
@@ -67,6 +67,16 @@ function PlayState:update(dt)
     if self.bird.y > VIRTUAL_HEIGHT - 15 then
         gStateMachine:change("score", { score = self.score })
     end
+
+    if love.keyboard.wasPressed("p") then
+        gStateMachine:change("pause", {
+            bird = self.bird,
+            pipePairs = self.pipePairs,
+            timer = self.timer,
+            score = self.score,
+            lastY = self.lastY
+        })
+    end
 end
 
 function PlayState:render()
@@ -80,8 +90,16 @@ function PlayState:render()
     self.bird:render()
 end
 
-function PlayState:enter()
+function PlayState:enter(params)
     SCROLLING = true
+
+    if params then
+        self.bird = params.bird
+        self.pipePairs = params.pipePairs
+        self.timer = params.timer
+        self.score = params.score
+        self.lastY = params.lastY
+    end
 end
 
 function PlayState:exit()
