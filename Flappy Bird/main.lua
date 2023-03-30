@@ -57,6 +57,19 @@ function love.load()
 
     love.graphics.setFont(bigFont)
 
+    sounds = {
+        ['jump'] = love.audio.newSource('audio/jump.wav', 'static'),
+        ['explosion'] = love.audio.newSource('audio/explosion.wav', 'static'),
+        ['hurt'] = love.audio.newSource('audio/hurt.wav', 'static'),
+        ['score'] = love.audio.newSource('audio/score.wav', 'static'),
+        -- https://freesound.org/people/xsgianni/sounds/388079/
+        ['music'] = love.audio.newSource('audio/marios_way.mp3', 'static')
+    }
+
+    -- start music
+    sounds['music']:setLooping(true)
+    sounds['music']:play()
+
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         resizable = true,
